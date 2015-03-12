@@ -40,6 +40,11 @@
 
 	}
 
+	/**
+	 * Register as a jQuery plugin.
+	 * @param {Object|String} settings
+	 * @return {jQuery Object}
+	 */
 	$.fn.hopscotch = function(settings) {
 		return this.each(function() {
 
