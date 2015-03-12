@@ -18,7 +18,13 @@
 	 * @type {Object}
 	 */
 	var defaultSettings = {
-		stepClass: 'hopscotch-step'
+		stepClass: 'hopscotch-step',
+		directionNav: {
+			up: false,
+			right: false,
+			down: false,
+			left: false
+		}
 	};
 
 	/**
@@ -44,20 +50,16 @@
 	 * Initializes the plugin.
 	 */
 	Hopscotch.prototype.init = function() {
-		this.build();
+		this.buildPlayground();
 	}
 
 	/**
-	 * Build the playground.
+	 * Build the hopscotch playground.
 	 */
-	Hopscotch.prototype.build = function() {
+	Hopscotch.prototype.buildPlayground = function() {
 		var _this = this;
 
 		try {
-			// we'll save the largest row and col here
-			var maxRow = -1;
-			var maxCol = -1;
-
 			// loop through all steps
 			this.$container.find('.' + this.settings.stepClass).each(function() {
 				var _row = $(this).data('row');
@@ -90,20 +92,13 @@
 				});
 
 				// move each step to its appropriate location
-				$(this).css('top', _row * 100 + '%');
-				$(this).css('left', _col * 100 + '%');
-
-				// test against the current max row & col
-				maxRow = Math.max(maxRow, row);
-				maxCol = Math.max(maxCol, col);
+				$(this).css({
+					transform: 'translate3d(' + (_col * 100) + '%, ' + (_row * 100) + '%, 0)'
+				});
 			});
 
-			// resize the main container to fit all steps
-			if (maxRow > -1 && maxCol > -1) {
-				this.$container.css('width', (maxCol + 1) * 100 + '%');
-				this.$container.css('height', (maxRow + 1) * 100 + '%');
-			}
 		} catch (e) {
+			// display error messages (if any)
 			console.error(e.message);
 		}
 	}
@@ -119,7 +114,7 @@
 		return this.each(function() {
 			var $container = $(this);
 			var instance = $container.data('hopscotch');
-			
+
 			if (!instance) {
 				$container.data('hopscotch', new Hopscotch(this, settings));
 			}
