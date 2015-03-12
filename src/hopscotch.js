@@ -51,6 +51,8 @@
 	 */
 	Hopscotch.prototype.init = function() {
 		this.buildPlayground();
+
+		this.buildDirectionNav();
 	}
 
 	/**
@@ -100,6 +102,28 @@
 		} catch (e) {
 			// display error messages (if any)
 			console.error(e.message);
+		}
+	}
+
+	/**
+	 * Build the direction navigation.
+	 */
+	Hopscotch.prototype.buildDirectionNav = function() {
+		var _this = this;
+		var direction;
+
+		// loop through all directions
+		for(direction in this.settings.directionNav) {
+			// check if an element has been setup for this direction
+			if (typeof this.settings.directionNav[direction] !== 'undefined' && this.settings.directionNav[direction]) {
+				// setup a click handler that triggers a hopscotch:move event
+				(function(direction, _this) {
+					$(_this.settings.directionNav[direction]).on('click', function(event) {
+						_this.$container.trigger('hopscotch:move', direction);
+						event.preventDefault();
+					});
+				})(direction, _this);
+			}
 		}
 	}
 
