@@ -37,6 +37,13 @@
 	 * Initializes the plugin.
 	 */
 	Hopscotch.prototype.init = function() {
+		this.build();
+	}
+
+	/**
+	 * Build the playground.
+	 */
+	Hopscotch.prototype.build = function() {
 
 	}
 
