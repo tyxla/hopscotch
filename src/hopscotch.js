@@ -1,36 +1,56 @@
 // Hopscotch 0.1
 // Copyright (c) 2015 Marin Atanasov (www.marinatanasov.com)
-// Hopscotch is licensed under the terms of the MIT License
+// Hopscotch is licensed under the terms of the MIT License.
 
-/**
- * Hopscotch - Javascript library for building infinite 2D paths that user can navigate through, similar to hopscotch playgrounds.
- *
- * @param container {mixed} - either a dom element reference or the string id of the container
- * @param options {object} - general options
- */
-var Hopscotch = function(container, options) {
-	this.initialize(container, options);
-}
+;(function ($, document, window) {
 
-Hopscotch.prototype = {
+	'use strict';
 
 	/**
-	 * Constructor.
-	 *
-	 * @param container {mixed} - either a dom element reference or the string id of the container
-	 * @param options {object} - general options
+	 * Global variables.
+	 * @type {jQuery Object}
 	 */
-	initialize: function(container, options) {
-		var self = this;
+	var $doc    = $(document);
+	var $win    = $(window);
 
-		if (!container) {
-			throw new Error("Hopscotch::initialize - No container reference or id has been provided.");
-		}
+	/**
+	 * Default settings.
+	 * @type {Object}
+	 */
+	var defaultSettings = {};
 
-		this.container = container.nodeName ? container : document.getElementById(container);
-		if(!this.container) {
-			throw new Error("Hopscotch::initialize - No container with reference or id of '" + container + "' exists.");
-		}
+	/**
+	 * Creates a new Hopscotch instance.
+	 * @constructor
+	 * @param  {DOM Element} container
+	 * @param  {Object}      settings 
+	 */
+	var Hopscotch = function(container, settings) {
+		this.container = $(container);
+
+		this.settings = $.extend({}, defaultSettings, settings);
+
+		this.init();
 	}
 
-}
+	/**
+	 * Initializes the plugin.
+	 */
+	Hopscotch.prototype.init = function() {
+
+	}
+
+	$.fn.hopscotch = function(settings) {
+		return this.each(function() {
+
+			var $container = $(this);
+			var instance = $container.data('hopscotch');
+
+			if (!instance) {
+				$container.data('hopscotch', new Hopscotch(this, settings));
+			}
+
+		});
+	}
+
+})(jQuery, document, window);
