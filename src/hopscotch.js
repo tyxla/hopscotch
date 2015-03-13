@@ -20,6 +20,7 @@
 	var defaultSettings = {
 		stepClass: 'hopscotch-step',
 		loadedClass: 'hopscotch-loaded',
+		disabledClass: 'hopscotch-disabled',
 		startAt: {
 			row: false,
 			col: false,
@@ -47,6 +48,9 @@
 
 		// holder for all steps
 		this.steps = {};
+
+		// the current step
+		this.currentStep = false;
 
 		this.init();
 	}
@@ -173,6 +177,12 @@
 		this.$container.css({
 			transform: 'translate3d(' + (_col * 100) + '%, ' + (_row * 100) + '%, 0)'
 		});
+
+		// mark this step as the current one
+		this.currentStep = key;
+
+		// synchronize with the current state
+		this.sync();
 	}
 
 	/**
@@ -190,6 +200,48 @@
 		setTimeout(function() {
 			_this.$container.addClass(_this.settings.loadedClass);
 		}, 5);
+	}
+
+	/**
+	 * Synchronize everything with the current state
+	 */
+	Hopscotch.prototype.sync = function() {
+		// get the current step, row and col
+		var currentStep = this.steps[this.currentStep];
+		var currentRow = currentStep.data('_row');
+		var currentCol = currentStep.data('_col');
+
+		// build the next step for each direction
+		var directions = {
+			'up': {
+				row: currentRow - 1,
+				col: currentCol
+			},
+			'down': {
+				row: currentRow + 1,
+				col: currentCol
+			},
+			'left': {
+				row: currentRow,
+				col: currentCol - 1
+			},
+			'right': {
+				row: currentRow,
+				col: currentCol + 1
+			}
+		};
+
+		// toggle directionNav links based on their availability
+		for(var direction in directions) {
+			var nextRow = directions[direction].row;
+			var nextCol = directions[direction].col;
+			var nextKey = this.getStepKey(nextRow, nextCol);
+			if (nextKey in this.steps) {
+				$(this.settings.directionNav[direction]).removeClass(this.settings.disabledClass);
+			} else {
+				$(this.settings.directionNav[direction]).addClass(this.settings.disabledClass);
+			}
+		}
 	}
 
 	/**

@@ -8,4 +8,7 @@ html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
 	transition: all .5s; 
 	-webkit-transition: all .5s; 
 }
+
 .hopscotch-step { width: 100%; height: 100%; position: absolute; }
+
+.hopscotch-disabled { display: none; }
