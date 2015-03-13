@@ -1,8 +1,10 @@
 html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
 
-.hopscotch-container { height: 100%; position: relative; top: 0; left: 0;
+.hopscotch-container { height: 100%; position: relative; top: 0; left: 0; 
 	transform: scale(1) translate3d(0,0,0);
 	-webkit-transform: scale(1) translate3d(0,0,0);
+}
+.hopscotch-container.hopscotch-loaded {
 	transition: all .5s; 
 	-webkit-transition: all .5s; 
 }
