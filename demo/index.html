@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript" src="../src/hopscotch.js"></script>
+	<script type="text/javascript">
+		jQuery(function($) {
+			$('#hopscotch-container').hopscotch({
+				directionNav: {
+					up: '#up',
+					down: '#down',
+					left: '#left',
+					right: '#right',
+				},
+				startAt: {
+					row: 1,
+					col: 1
+				}
+			});
+		});
+	</script>
+	<link rel="stylesheet" type="text/css" href="../src/hopscotch.css">
+</head>
+<body>
+	<div id="hopscotch-container" class="hopscotch-container">
+		<div class="hopscotch-step" data-row="0" data-col="0" style="background: #fff">00</div>
+		<div class="hopscotch-step" data-row="0" data-col="1" style="background: #900">01</div>
+		<div class="hopscotch-step" data-row="0" data-col="2" style="background: #090">02</div>
+		<div class="hopscotch-step" data-row="1" data-col="0" style="background: #009">10</div>
+		<div class="hopscotch-step" data-row="1" data-col="1" style="background: #999">11</div>
+		<div class="hopscotch-step" data-row="1" data-col="2" style="background: #666">12</div>
+	</div>
+	<div id="direction-nav" style="position: absolute; top: 50%; ">
+		<a href="#" id="up">Up</a>
+		<a href="#" id="down">Down</a>
+		<a href="#" id="left">Left</a>
+		<a href="#" id="right">Right</a>
+	</div>
+</body>
+</html>
