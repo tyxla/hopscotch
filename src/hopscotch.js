@@ -32,6 +32,8 @@
 			left: false
 		},
 		enableArrowKeyNav: true,
+		enableSwipeNav: true,
+		swipeThreshold: 75,
 		debug: false
 	};
 
@@ -183,6 +185,29 @@
 
 				// if an arrow key was pressed, move in that direction
 				if (direction) {
+					_this.move(direction);
+				}
+			});
+		}
+
+		// add swipe handlers for all directions (if enabled and available)
+		if (this.settings.enableSwipeNav && typeof $(document).swipe === 'function') {
+			$doc.swipe({
+				threshold: _this.settings.swipeThreshold,
+
+				swipeUp: function(event, direction, distance, duration, fingerCount) {
+					_this.move(direction);
+				},
+
+				swipeDown: function(event, direction, distance, duration, fingerCount) {
+					_this.move(direction);
+				},
+
+				swipeLeft: function(event, direction, distance, duration, fingerCount) {
+					_this.move(direction);
+				},
+
+				swipeRight: function(event, direction, distance, duration, fingerCount) {
 					_this.move(direction);
 				}
 			});
