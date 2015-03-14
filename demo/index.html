@@ -18,7 +18,7 @@
 					row: 1,
 					col: 1
 				},
-				mapNavContainer: '#mapnav',
+				mapNavContainer: '#map-nav',
 				debug: true
 			});
 		});
@@ -42,6 +42,12 @@
 		.direction-nav a#right { top: 50%; margin-top: -32px; }
 		.direction-nav a#left { left: 10px; }
 		.direction-nav a#right { right: 10px; }
+
+		.map-nav { position: absolute; bottom: 5px; right: 5px; z-index: 10; }
+		.map-nav table,
+		.map-nav table tr, 
+		.map-nav table td { border-spacing: 0; border: 0; padding: 0; }
+		.map-nav span { background: #000; display: block; width: 32px; height: 32px; margin: 5px; cursor: pointer; }
 	</style>
 </head>
 <body>
@@ -59,6 +65,6 @@
 		<a href="#" id="left"><i class="fa fa-arrow-left"></i></a>
 		<a href="#" id="right"><i class="fa fa-arrow-right"></i></a>
 	</div>
-	<div id="mapnav"></div>
+	<div id="map-nav" class="map-nav"></div>
 </body>
 </html>

@@ -35,6 +35,8 @@
 		enableSwipeNav: true,
 		swipeThreshold: 75,
 		mapNavContainer: false,
+		mapItemClass: 'hopscotch-map-item',
+		mapNavItemHTML: '<span class="{{{mapItemClass}}}" data-row="{{{row}}}" data-col="{{{col}}}"></span>',
 		debug: false
 	};
 
@@ -222,6 +224,7 @@
 			return false;
 		}
 
+		var _this = this;
 		var maxCol = -1;
 		var maxRow = -1;
 		var stepKeys = Object.getOwnPropertyNames(this.steps);
@@ -233,6 +236,37 @@
 			maxCol = Math.max(maxCol, this.steps[key].data('_col'));
 		}
 
+		// generate map table HTML
+		var tableHTML = '';
+		for(var i = 0; i <= maxRow; i++) {
+			var rowHTML = '';
+			for(var j = 0; j <= maxCol; j++) {
+				var mapNavItemKey = this.getStepKey(i, j);
+				var mapNavItemHTML = '';
+				if (mapNavItemKey in this.steps) {
+					mapNavItemHTML = this.settings.mapNavItemHTML;
+					mapNavItemHTML = mapNavItemHTML.replace('{{{row}}}', i);
+					mapNavItemHTML = mapNavItemHTML.replace('{{{col}}}', j);
+					mapNavItemHTML = mapNavItemHTML.replace('{{{mapItemClass}}}', this.settings.mapItemClass);
+				}
+				rowHTML += '<td>' + mapNavItemHTML + '</td>';
+			}
+
+			tableHTML += '<tr>' + rowHTML + '</tr>';
+		}
+
+		// insert map table
+		$(this.settings.mapNavContainer).html('<table>' + tableHTML + '</table>');
+
+		// handle map item click events
+		$(this.settings.mapNavContainer).find('.' + this.settings.mapItemClass).on('click', function(event) {
+			var row = $(this).data('row');
+			var col = $(this).data('col');
+
+			_this.navigateTo(row, col);
+
+			event.preventDefault();
+		});
 	}
 
 	/**
