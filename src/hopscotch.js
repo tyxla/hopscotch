@@ -168,13 +168,9 @@
 		var key = this.getStepKey(row, col);
 
 		// make sure that the step is valid
-		try {
-			if (!(key in this.steps)) {
-				throw new Error('Hopscotch error: No step exists at row ' + row + ' and col ' + col + '.');
-			}
-		} catch(e) {
-			// display error messages (if any)
-			console.error(e.message);
+		if (!(key in this.steps)) {
+			console.log('Hopscotch warning: No step exists at row ' + row + ' and col ' + col + '.');
+			return false;
 		}
 
 		// perform animation to that step
@@ -203,16 +199,19 @@
 
 		// determine the next step
 		var nextStep = this.getNextStep(row, col, direction);
+
+		// if the next step does not exist, bail
+		if (!nextStep) {
+			return false;
+		}
+
+		// get the key of the next step
 		var nextStepKey = this.getStepKey(nextStep.row, nextStep.col);
 
 		// make sure that the step is valid
-		try {
-			if (!(nextStepKey in this.steps)) {
-				throw new Error('Hopscotch error: No step exists at row ' + nextStep.row + ' and col ' + nextStep.col + '.');
-			}
-		} catch(e) {
-			// display error messages (if any)
-			console.error(e.message);
+		if (!(nextStepKey in this.steps)) {
+			console.log('Hopscotch warning: No step exists at row ' + nextStep.row + ' and col ' + nextStep.col + '.');
+			return false;
 		}
 
 		// perform animation to that step
@@ -276,7 +275,7 @@
 	 * @param  {String}  direction
 	 */
 	Hopscotch.prototype.getNextStep = function(row, col, direction) {
-		var nextStep;
+		var nextStep = false;
 
 		// make sure the direction is valid
 		try {
@@ -308,10 +307,6 @@
 						row: row,
 						col: col + 1
 					}
-				break;
-
-				default:
-					throw new Error('Hopscotch error: Invalid direction: "' + direction + '".');
 				break;
 			}
 		} catch(e) {
