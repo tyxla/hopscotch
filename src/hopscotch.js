@@ -192,24 +192,20 @@
 
 		// add swipe handlers for all directions (if enabled and available)
 		if (this.settings.enableSwipeNav && typeof $(document).swipe === 'function') {
+
+			// called on swipe on all directions
+			var onSwipe = function(event, direction, distance, duration, fingerCount) {
+				_this.move(direction);
+			}
+
+			// initialize touchSwipe
 			$doc.swipe({
 				threshold: _this.settings.swipeThreshold,
 
-				swipeUp: function(event, direction, distance, duration, fingerCount) {
-					_this.move(direction);
-				},
-
-				swipeDown: function(event, direction, distance, duration, fingerCount) {
-					_this.move(direction);
-				},
-
-				swipeLeft: function(event, direction, distance, duration, fingerCount) {
-					_this.move(direction);
-				},
-
-				swipeRight: function(event, direction, distance, duration, fingerCount) {
-					_this.move(direction);
-				}
+				swipeUp: onSwipe,
+				swipeDown: onSwipe,
+				swipeLeft: onSwipe,
+				swipeRight: onSwipe
 			});
 		}
 	}
