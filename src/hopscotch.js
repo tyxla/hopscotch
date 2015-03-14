@@ -30,7 +30,8 @@
 			right: false,
 			down: false,
 			left: false
-		}
+		},
+		enableArrowKeyNav: true
 	};
 
 	/**
@@ -144,11 +145,11 @@
 		var _this = this;
 		var direction;
 
-		// loop through all directions
+		// add click handlers for all direction buttons
 		for(direction in this.settings.directionNav) {
 			// check if an element has been setup for this direction
 			if (typeof this.settings.directionNav[direction] !== 'undefined' && this.settings.directionNav[direction]) {
-				// setup a click handler that triggers a hopscotch:move event
+				// setup a click handler that triggers a move
 				(function(direction, _this) {
 					$(_this.settings.directionNav[direction]).on('click', function(event) {
 						_this.move(direction);
@@ -156,6 +157,34 @@
 					});
 				})(direction, _this);
 			}
+		}
+
+		// add keyup handlers for all direction arrow keys (if enabled)
+		if (this.settings.enableArrowKeyNav) {
+			$doc.on('keyup', function(event) {
+				var direction = false; 
+
+				// if an arrow key is pressed, determine its direction
+				switch (event.which) {
+					case 37:
+						direction = 'left';
+					break;
+					case 38:
+						direction = 'up';
+					break;
+					case 39:
+						direction = 'right'
+					break;
+					case 40:
+						direction = 'down';
+					break;
+				}
+
+				// if an arrow key was pressed, move in that direction
+				if (direction) {
+					_this.move(direction);
+				}
+			});
 		}
 	}
 
