@@ -23,21 +23,40 @@
 		});
 	</script>
 	<link rel="stylesheet" type="text/css" href="../src/hopscotch.css">
+	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+	<style type="text/css">
+		body { font-family: Helvetica, Arial, sans-serif; color: #000; font-size: 12px; line-height: 1; }
+		a { color: #111; text-decoration: none; }
+		a:hover { text-decoration: underline; }
+
+		.hopscotch-step span { position: absolute; top: 50%; margin-top: -15px; font-size: 30px; font-weight: bold; width: 100%; display: block; text-align: center; }
+
+		.direction-nav { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+		.direction-nav a { position: absolute; width: 64px; height: 64px; font-size: 64px; text-align: center; }
+		.direction-nav a#up,
+		.direction-nav a#down { left: 50%; margin-left: -32px; }
+		.direction-nav a#up { top: 10px; }
+		.direction-nav a#down { bottom: 10px; }
+		.direction-nav a#left,
+		.direction-nav a#right { top: 50%; margin-top: -32px; }
+		.direction-nav a#left { left: 10px; }
+		.direction-nav a#right { right: 10px; }
+	</style>
 </head>
 <body>
 	<div id="hopscotch-container" class="hopscotch-container">
-		<div class="hopscotch-step" data-row="0" data-col="0" style="background: #fff">00</div>
-		<div class="hopscotch-step" data-row="0" data-col="1" style="background: #900">01</div>
-		<div class="hopscotch-step" data-row="0" data-col="2" style="background: #090">02</div>
-		<div class="hopscotch-step" data-row="1" data-col="0" style="background: #009">10</div>
-		<div class="hopscotch-step" data-row="1" data-col="1" style="background: #999">11</div>
-		<div class="hopscotch-step" data-row="1" data-col="2" style="background: #666">12</div>
+		<div class="hopscotch-step" data-row="0" data-col="0" style="background: #fff"><span>00</span></div>
+		<div class="hopscotch-step" data-row="0" data-col="1" style="background: #933"><span>01</span></div>
+		<div class="hopscotch-step" data-row="0" data-col="2" style="background: #393"><span>02</span></div>
+		<div class="hopscotch-step" data-row="1" data-col="0" style="background: #339"><span>10</span></div>
+		<div class="hopscotch-step" data-row="1" data-col="1" style="background: #999"><span>11</span></div>
+		<div class="hopscotch-step" data-row="1" data-col="2" style="background: #666"><span>12</span></div>
 	</div>
-	<div id="direction-nav" style="position: absolute; top: 50%; ">
-		<a href="#" id="up">Up</a>
-		<a href="#" id="down">Down</a>
-		<a href="#" id="left">Left</a>
-		<a href="#" id="right">Right</a>
+	<div id="direction-nav" class="direction-nav">
+		<a href="#" id="up"><i class="fa fa-arrow-up"></i></a>
+		<a href="#" id="down"><i class="fa fa-arrow-down"></i></a>
+		<a href="#" id="left"><i class="fa fa-arrow-left"></i></a>
+		<a href="#" id="right"><i class="fa fa-arrow-right"></i></a>
 	</div>
 </body>
 </html>
