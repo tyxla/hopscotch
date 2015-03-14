@@ -56,6 +56,12 @@
 	}
 
 	/**
+	 * All available directions.
+	 * @type {Array}
+	 */
+	Hopscotch.prototype.DIRECTIONS = ['up', 'down', 'left', 'right'];
+
+	/**
 	 * Initializes the plugin.
 	 */
 	Hopscotch.prototype.init = function() {
@@ -145,7 +151,7 @@
 				// setup a click handler that triggers a hopscotch:move event
 				(function(direction, _this) {
 					$(_this.settings.directionNav[direction]).on('click', function(event) {
-						_this.$container.trigger('hopscotch:move', direction);
+						_this.move(direction);
 						event.preventDefault();
 					});
 				})(direction, _this);
@@ -186,6 +192,44 @@
 	}
 
 	/**
+	 * Move at a certain direction
+	 * @param  {String} direction
+	 */
+	Hopscotch.prototype.move = function(direction) {
+		// get the current step, row and col
+		var currentStep = this.steps[this.currentStep];
+		var row = currentStep.data('_row');
+		var col = currentStep.data('_col');
+
+		// determine the next step
+		var nextStep = this.getNextStep(row, col, direction);
+		var nextStepKey = this.getStepKey(nextStep.row, nextStep.col);
+
+		// make sure that the step is valid
+		try {
+			if (!(nextStepKey in this.steps)) {
+				throw new Error('Hopscotch error: No step exists at row ' + nextStep.row + ' and col ' + nextStep.col + '.');
+			}
+		} catch(e) {
+			// display error messages (if any)
+			console.error(e.message);
+		}
+
+		// perform animation to that step
+		var _row = -1 * nextStep.row;
+		var _col = -1 * nextStep.col;
+		this.$container.css({
+			transform: 'translate3d(' + (_col * 100) + '%, ' + (_row * 100) + '%, 0)'
+		});
+
+		// mark this step as the current one
+		this.currentStep = nextStepKey;
+
+		// synchronize with the current state
+		this.sync();
+	}
+
+	/**
 	 * Start by going to the initial step.
 	 */
 	Hopscotch.prototype.start = function() {
@@ -211,31 +255,12 @@
 		var currentRow = currentStep.data('_row');
 		var currentCol = currentStep.data('_col');
 
-		// build the next step for each direction
-		var directions = {
-			'up': {
-				row: currentRow - 1,
-				col: currentCol
-			},
-			'down': {
-				row: currentRow + 1,
-				col: currentCol
-			},
-			'left': {
-				row: currentRow,
-				col: currentCol - 1
-			},
-			'right': {
-				row: currentRow,
-				col: currentCol + 1
-			}
-		};
-
 		// toggle directionNav links based on their availability
-		for(var direction in directions) {
-			var nextRow = directions[direction].row;
-			var nextCol = directions[direction].col;
-			var nextKey = this.getStepKey(nextRow, nextCol);
+		for(var dirKey in this.DIRECTIONS) {
+			var direction = this.DIRECTIONS[dirKey];
+			var nextStep = this.getNextStep(currentRow, currentCol, direction);
+			var nextKey = this.getStepKey(nextStep.row, nextStep.col);
+
 			if (nextKey in this.steps) {
 				$(this.settings.directionNav[direction]).removeClass(this.settings.disabledClass);
 			} else {
@@ -245,7 +270,62 @@
 	}
 
 	/**
+	 * Build the next step out of current row and col and direction.
+	 * @param  {Integer} row
+	 * @param  {Integer} col
+	 * @param  {String}  direction
+	 */
+	Hopscotch.prototype.getNextStep = function(row, col, direction) {
+		var nextStep;
+
+		// make sure the direction is valid
+		try {
+			// determine the next step based on the current one and the direction
+			switch(direction) {
+				case 'up':
+					nextStep = {
+						row: row - 1,
+						col: col
+					}
+				break;
+
+				case 'down':
+					nextStep = {
+						row: row + 1,
+						col: col
+					}
+				break;
+
+				case 'left':
+					nextStep = {
+						row: row,
+						col: col - 1
+					}
+				break;
+
+				case 'right':
+					nextStep = {
+						row: row,
+						col: col + 1
+					}
+				break;
+
+				default:
+					throw new Error('Hopscotch error: Invalid direction: "' + direction + '".');
+				break;
+			}
+		} catch(e) {
+			// display error messages (if any)
+			console.error(e.message);
+		}
+
+		return nextStep;
+	}
+
+	/**
 	 * Build the step key out of row and col
+	 * @param  {Integer} row
+	 * @param  {Integer} col
 	 */
 	Hopscotch.prototype.getStepKey = function(row, col) {
 		return row + '_' + col;
