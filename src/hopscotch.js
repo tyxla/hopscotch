@@ -34,6 +34,7 @@
 		enableArrowKeyNav: true,
 		enableSwipeNav: true,
 		swipeThreshold: 75,
+		mapNavContainer: false,
 		debug: false
 	};
 
@@ -72,6 +73,8 @@
 		this.buildPlayground();
 
 		this.buildDirectionNav();
+
+		this.buildMapNav();
 
 		this.start();
 	}
@@ -208,6 +211,28 @@
 				swipeRight: onSwipe
 			});
 		}
+	}
+
+	/**
+	 * Build the map navigation.
+	 */
+	Hopscotch.prototype.buildMapNav = function() {
+		// make sure we have a selector specified
+		if (!this.settings.mapNavContainer) {
+			return false;
+		}
+
+		var maxCol = -1;
+		var maxRow = -1;
+		var stepKeys = Object.getOwnPropertyNames(this.steps);
+
+		// determine the maximum row and col
+		for(var index in stepKeys) {
+			var key = stepKeys[index];
+			maxRow = Math.max(maxRow, this.steps[key].data('_row'));
+			maxCol = Math.max(maxCol, this.steps[key].data('_col'));
+		}
+
 	}
 
 	/**
