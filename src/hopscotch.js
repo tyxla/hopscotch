@@ -31,7 +31,8 @@
 			down: false,
 			left: false
 		},
-		enableArrowKeyNav: true
+		enableArrowKeyNav: true,
+		debug: false
 	};
 
 	/**
@@ -198,7 +199,9 @@
 
 		// make sure that the step is valid
 		if (!(key in this.steps)) {
-			console.log('Hopscotch warning: No step exists at row ' + row + ' and col ' + col + '.');
+			if (this.settings.debug) {
+				console.log('Hopscotch warning: No step exists at row ' + row + ' and col ' + col + '.');
+			}
 			return false;
 		}
 
@@ -239,7 +242,9 @@
 
 		// make sure that the step is valid
 		if (!(nextStepKey in this.steps)) {
-			console.log('Hopscotch warning: No step exists at row ' + nextStep.row + ' and col ' + nextStep.col + '.');
+			if (this.settings.debug) {
+				console.log('Hopscotch warning: No step exists at row ' + nextStep.row + ' and col ' + nextStep.col + '.');
+			}
 			return false;
 		}
 
