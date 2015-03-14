@@ -36,6 +36,7 @@
 		swipeThreshold: 75,
 		mapNavContainer: false,
 		mapItemClass: 'hopscotch-map-item',
+		mapItemActiveClass: 'hopscotch-active-map-item',
 		mapNavItemHTML: '<span class="{{{mapItemClass}}}" data-row="{{{row}}}" data-col="{{{col}}}"></span>',
 		debug: false
 	};
@@ -240,15 +241,18 @@
 		var tableHTML = '';
 		for(var i = 0; i <= maxRow; i++) {
 			var rowHTML = '';
+
 			for(var j = 0; j <= maxCol; j++) {
 				var mapNavItemKey = this.getStepKey(i, j);
 				var mapNavItemHTML = '';
+
 				if (mapNavItemKey in this.steps) {
 					mapNavItemHTML = this.settings.mapNavItemHTML;
 					mapNavItemHTML = mapNavItemHTML.replace('{{{row}}}', i);
 					mapNavItemHTML = mapNavItemHTML.replace('{{{col}}}', j);
 					mapNavItemHTML = mapNavItemHTML.replace('{{{mapItemClass}}}', this.settings.mapItemClass);
 				}
+
 				rowHTML += '<td>' + mapNavItemHTML + '</td>';
 			}
 
@@ -276,6 +280,11 @@
 	 */
 	Hopscotch.prototype.navigateTo = function(row, col) {
 		var key = this.getStepKey(row, col);
+
+		// no need to navigate to the current step
+		if (key == this.currentStep) {
+			return false;
+		}
 
 		// make sure that the step is valid
 		if (!(key in this.steps)) {
@@ -379,6 +388,14 @@
 			} else {
 				$(this.settings.directionNav[direction]).addClass(this.settings.disabledClass);
 			}
+		}
+
+		// change the active element in the map navigation
+		if (this.settings.mapNavContainer) {
+			var container = $(this.settings.mapNavContainer);
+			var activeClass = this.settings.mapItemActiveClass;
+			container.find('.' + activeClass).removeClass(activeClass);
+			container.find('[data-row="' + currentRow + '"][data-col="' + currentCol + '"]').addClass(activeClass);
 		}
 	}
 
