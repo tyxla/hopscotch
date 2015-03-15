@@ -359,7 +359,7 @@
 
 		// use CSS for animation
 		item.css({
-			transform: 'translate3d(' + (col * 100) + '%, ' + (row * 100) + '%, 0)'
+			transform: 'translate(' + (col * 100) + '%, ' + (row * 100) + '%)'
 		});
 	}
 
