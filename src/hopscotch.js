@@ -136,9 +136,7 @@
 				});
 
 				// move each step to its appropriate location
-				$(this).css({
-					transform: 'translate3d(' + (_col * 100) + '%, ' + (_row * 100) + '%, 0)'
-				});
+				_this.animate(_row, _col, $(this));
 			});
 
 		} catch (e) {
@@ -297,9 +295,7 @@
 		// perform animation to that step
 		var _row = -1 * row;
 		var _col = -1 * col;
-		this.$container.css({
-			transform: 'translate3d(' + (_col * 100) + '%, ' + (_row * 100) + '%, 0)'
-		});
+		this.animate(_row, _col);
 
 		// mark this step as the current one
 		this.currentStep = key;
@@ -340,15 +336,31 @@
 		// perform animation to that step
 		var _row = -1 * nextStep.row;
 		var _col = -1 * nextStep.col;
-		this.$container.css({
-			transform: 'translate3d(' + (_col * 100) + '%, ' + (_row * 100) + '%, 0)'
-		});
+		this.animate(_row, _col);
 
 		// mark this step as the current one
 		this.currentStep = nextStepKey;
 
 		// synchronize with the current state
 		this.sync();
+	}
+
+	/**
+	 * Animate to a certain step (identified by row and col).
+	 * Can optionally animate a different item.
+	 * @param  {Integer} row
+	 * @param  {Integer} col
+	 * @param  {jQuery Object} item
+	 */
+	Hopscotch.prototype.animate = function(row, col, item) {
+		if (typeof item === 'undefined') {
+			item = this.$container;
+		}
+
+		// use CSS for animation
+		item.css({
+			transform: 'translate3d(' + (col * 100) + '%, ' + (row * 100) + '%, 0)'
+		});
 	}
 
 	/**
