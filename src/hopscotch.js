@@ -23,7 +23,7 @@
 		disabledClass: 'hopscotch-disabled',
 		startAt: {
 			row: false,
-			col: false,
+			col: false
 		},
 		directionNav: {
 			up: false,
@@ -420,41 +420,39 @@
 	Hopscotch.prototype.getNextStep = function(row, col, direction) {
 		var nextStep = false;
 
-		// make sure the direction is valid
-		try {
-			// determine the next step based on the current one and the direction
-			switch(direction) {
-				case 'up':
-					nextStep = {
-						row: row - 1,
-						col: col
-					}
-				break;
+		// determine the next step based on the current one and the direction
+		switch(direction) {
+			case 'up':
+				nextStep = {
+					row: row - 1,
+					col: col
+				}
+			break;
 
-				case 'down':
-					nextStep = {
-						row: row + 1,
-						col: col
-					}
-				break;
+			case 'down':
+				nextStep = {
+					row: row + 1,
+					col: col
+				}
+			break;
 
-				case 'left':
-					nextStep = {
-						row: row,
-						col: col - 1
-					}
-				break;
+			case 'left':
+				nextStep = {
+					row: row,
+					col: col - 1
+				}
+			break;
 
-				case 'right':
-					nextStep = {
-						row: row,
-						col: col + 1
-					}
-				break;
-			}
-		} catch(e) {
-			// display error messages (if any)
-			console.error(e.message);
+			case 'right':
+				nextStep = {
+					row: row,
+					col: col + 1
+				}
+			break;
+
+			default: 
+				console.log('Hopscotch warning: Invalid direction: "' + direction + '".');
+			break;
 		}
 
 		return nextStep;
