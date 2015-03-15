@@ -19,6 +19,7 @@
 	 */
 	var defaultSettings = {
 		stepClass: 'hopscotch-step',
+		activeStepClass: 'hopscotch-step-active',
 		loadedClass: 'hopscotch-loaded',
 		disabledClass: 'hopscotch-disabled',
 		startAt: {
@@ -388,6 +389,11 @@
 		var currentStep = this.steps[this.currentStep];
 		var currentRow = currentStep.data('_row');
 		var currentCol = currentStep.data('_col');
+
+		// change the current step class
+		var stepActiveClass = this.settings.activeStepClass
+		this.$container.find('.' + stepActiveClass).removeClass(stepActiveClass);
+		currentStep.addClass(stepActiveClass);
 
 		// toggle directionNav links based on their availability
 		for(var dirKey in this.DIRECTIONS) {
