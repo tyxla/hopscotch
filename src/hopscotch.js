@@ -74,6 +74,8 @@
 	 * Initializes the plugin.
 	 */
 	Hopscotch.prototype.init = function() {
+		this.$container.trigger('hopscotch:beforeInit');
+
 		this.buildPlayground();
 
 		this.buildDirectionNav();
@@ -81,6 +83,8 @@
 		this.buildMapNav();
 
 		this.start();
+
+		this.$container.trigger('hopscotch:afterInit');
 	}
 
 	/**
@@ -293,6 +297,8 @@
 			return false;
 		}
 
+		this.$container.trigger('hopscotch:beforeNavigateTo');
+
 		// perform animation to that step
 		var _row = -1 * row;
 		var _col = -1 * col;
@@ -303,6 +309,8 @@
 
 		// synchronize with the current state
 		this.sync();
+
+		this.$container.trigger('hopscotch:afterNavigateTo');
 	}
 
 	/**
@@ -334,6 +342,8 @@
 			return false;
 		}
 
+		this.$container.trigger('hopscotch:beforeMove');
+
 		// perform animation to that step
 		var _row = -1 * nextStep.row;
 		var _col = -1 * nextStep.col;
@@ -344,6 +354,8 @@
 
 		// synchronize with the current state
 		this.sync();
+
+		this.$container.trigger('hopscotch:afterMove');
 	}
 
 	/**
@@ -370,6 +382,8 @@
 	Hopscotch.prototype.start = function() {
 		var _this = this;
 
+		this.$container.trigger('hopscotch:beforeStart');
+
 		// navigate to the initial step
 		var startRow = _this.settings.startAt.row;
 		var startCol = _this.settings.startAt.col;
@@ -378,6 +392,7 @@
 		// add the loaded class
 		setTimeout(function() {
 			_this.$container.addClass(_this.settings.loadedClass);
+			_this.$container.trigger('hopscotch:afterStart');
 		}, 5);
 	}
 
@@ -385,6 +400,8 @@
 	 * Synchronize everything with the current state
 	 */
 	Hopscotch.prototype.sync = function() {
+		this.$container.trigger('hopscotch:beforeSync');
+
 		// get the current step, row and col
 		var currentStep = this.steps[this.currentStep];
 		var currentRow = currentStep.data('_row');
@@ -415,6 +432,8 @@
 			container.find('.' + activeClass).removeClass(activeClass);
 			container.find('[data-row="' + currentRow + '"][data-col="' + currentCol + '"]').addClass(activeClass);
 		}
+
+		this.$container.trigger('hopscotch:afterSync');
 	}
 
 	/**
