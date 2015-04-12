@@ -29,6 +29,7 @@
 		animatingClass: 'hopscotch-animating',
 		animationSpeed: 500,
 		animationQueue: true,
+		animationEasing: 'ease',
 		directionNav: {
 			up: false,
 			right: false,
@@ -436,9 +437,10 @@
 		var startCol = _this.settings.startAt.col;
 		_this.navigateTo(startRow, startCol);
 
-		// add the loaded class
+		// add the loaded & easing classes, trigger afterStart
 		setTimeout(function() {
 			_this.$container.addClass(_this.settings.loadedClass);
+			_this.$container.addClass('hopscotch-easing-' + _this.settings.animationEasing);
 			_this.$container.trigger('hopscotch:afterStart');
 		}, 5);
 	}
