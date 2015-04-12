@@ -26,6 +26,9 @@
 			row: false,
 			col: false
 		},
+		animatingClass: 'hopscotch-animating',
+		animationSpeed: 500,
+		animationQueue: true,
 		directionNav: {
 			up: false,
 			right: false,
@@ -282,6 +285,11 @@
 	 * @param  {Integer} col
 	 */
 	Hopscotch.prototype.navigateTo = function(row, col) {
+		// if animation queue is enabled and hopscotch is loaded, prevent simultaneous animation
+		if (!this.canAnimate()) {
+			return false;
+		}
+
 		var key = this.getStepKey(row, col);
 
 		// no need to navigate to the current step
@@ -318,6 +326,11 @@
 	 * @param  {String} direction
 	 */
 	Hopscotch.prototype.move = function(direction) {
+		// if animation queue is enabled and hopscotch is loaded, prevent simultaneous animation
+		if (!this.canAnimate()) {
+			return false;
+		}
+
 		// get the current step, row and col
 		var currentStep = this.steps[this.currentStep];
 		var row = currentStep.data('_row');
@@ -359,6 +372,20 @@
 	}
 
 	/**
+	 * Whether we can currently animate.
+	 * @return  {bool} can
+	 */
+	Hopscotch.prototype.canAnimate = function() {
+		// if animation queue is enabled and hopscotch is loaded, prevent simultaneous animation
+		if (this.settings.animationQueue && this.$container.hasClass(this.settings.animatingClass) && this.$container.hasClass(this.settings.loadedClass)) {
+			return false;
+		}
+
+		// otherwise, we can always animate
+		return true;
+	}
+
+	/**
 	 * Animate to a certain step (identified by row and col).
 	 * Can optionally animate a different item.
 	 * @param  {Integer} row
@@ -369,6 +396,26 @@
 		if (typeof item === 'undefined') {
 			item = this.$container;
 		}
+
+		// if animation queue is enabled
+		if (this.settings.animationQueue && this.$container.hasClass(this.settings.loadedClass)) {
+
+			// prevent simultaneous animation
+			if (!this.canAnimate()) {
+				return false;
+			}
+
+			var _this = this;
+
+			// add "currently animating" class
+			this.$container.addClass(this.settings.animatingClass);
+
+			// remove the "currently animating" class after animation has completed
+			setTimeout(function() {
+				_this.$container.removeClass(_this.settings.animatingClass);
+			}, this.settings.animationSpeed);
+		}
+
 
 		// use CSS for animation
 		item.css({
@@ -408,7 +455,7 @@
 		var currentCol = currentStep.data('_col');
 
 		// change the current step class
-		var stepActiveClass = this.settings.activeStepClass
+		var stepActiveClass = this.settings.activeStepClass;
 		this.$container.find('.' + stepActiveClass).removeClass(stepActiveClass);
 		currentStep.addClass(stepActiveClass);
 
