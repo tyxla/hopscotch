@@ -1,5 +1,5 @@
 // Hopscotch 0.1
-// Copyright (c) 2015 Marin Atanasov (www.marinatanasov.com)
+// Copyright (c) 2015 Marin Atanasov (marinatanasov.com)
 // Hopscotch is licensed under the terms of the MIT License.
 
 ;(function ($, document, window) {
