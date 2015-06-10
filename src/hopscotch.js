@@ -232,6 +232,7 @@
 			return false;
 		}
 
+		// initialization
 		var _this = this;
 		var maxCol = -1;
 		var maxRow = -1;
@@ -253,6 +254,7 @@
 				var mapNavItemKey = this.getStepKey(i, j);
 				var mapNavItemHTML = '';
 
+				// generate and parse a single map item
 				if (mapNavItemKey in this.steps) {
 					mapNavItemHTML = this.settings.mapNavItemHTML;
 					mapNavItemHTML = mapNavItemHTML.replace('{{{row}}}', i);
@@ -553,6 +555,7 @@
 			var $container = $(this);
 			var instance = $container.data('hopscotch');
 
+			// allow instance to be accessed and manipulated
 			if (!instance) {
 				$container.data('hopscotch', new Hopscotch(this, settings));
 			}
